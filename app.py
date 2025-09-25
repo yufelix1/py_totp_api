@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
 import pyotp
-import os
 
 app = Flask(__name__)
 
@@ -14,11 +13,12 @@ def generate_2fa():
     try:
         totp = pyotp.TOTP(secret_key)
         code = totp.now()
+
         return jsonify({
             "c": code
         })
     except Exception as e:
-        return jsonify({"error": "Failed to generate code."}), 500
+        return jsonify({"error": f"Failed to generate code."}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
